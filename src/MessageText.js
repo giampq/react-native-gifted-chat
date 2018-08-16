@@ -27,14 +27,18 @@ export default class MessageText extends React.Component {
     if (WWW_URL_PATTERN.test(url)) {
       this.onUrlPress(`http://${url}`);
     } else {
-      Linking.canOpenURL(url).then((supported) => {
-        if (!supported) {
-          // eslint-disable-next-line
-          console.error('No handler for URL:', url);
-        } else {
-          Linking.openURL(url);
-        }
-      });
+      if(!!this.props.onUrlPress){
+        this.props.onUrlPress(url);
+      }else{
+        Linking.canOpenURL(url).then((supported) => {
+          if (!supported) {
+            // eslint-disable-next-line
+            console.error('No handler for URL:', url);
+          } else {
+            Linking.openURL(url);
+          }
+        });
+      }
     }
   }
 
